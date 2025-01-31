@@ -25,10 +25,6 @@ npm install
 npm run dev
 ```
 
-## Files
-- `index.html` - The main HTML structure.
-- `styles.css` - All styling for the application.
-- `CalendarApp.js` - JavaScript functionality for the calendar (update with your relevant files).
 
 ## Usage
 - Navigate between months: Use the arrow buttons.
