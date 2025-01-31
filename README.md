@@ -1,27 +1,46 @@
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# 💰 Expense Tracker Dashboard
 
-Follow these steps:
+## 🌐 Live Demo
+**[Try the app here!](https://mrprince419-expense-tracker.netlify.app/)**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Features
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Income and Expense Tracking: Log income and expenses with ease.
+- Categorize Transactions: Organize your transactions by categories.
+- Interactive Charts: Visualize spending patterns over time.
+- Responsive Design: Accessible on all devices.
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Getting Started
+```bash
+# Clone the repository
+git clone https://github.com/MrPrince419/Expense-Tracker-Dashboard.git
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Navigate to the project directory
+cd Expense-Tracker-Dashboard
+
+# Install the necessary dependencies
+npm install
+
+# Start the development server
 npm run dev
 ```
 
-## What technologies are used for this project?
+## Files
+- `index.html` - The main HTML structure.
+- `styles.css` - All styling for the application.
+- `CalendarApp.js` - JavaScript functionality for the calendar (update with your relevant files).
 
-This project is built with .
+## Usage
+- Navigate between months: Use the arrow buttons.
+- Add events: Click on a date to add events.
+- Manage events: Edit and delete events as needed.
+- Visualize data: Use the charts to see spending patterns.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Technologies Used
+- Frontend: React.js, TypeScript, Shadcn-ui, Tailwind CSS
+- Backend: Node.js, Express.js
+- Build Tool: Vite
+
+
+## Contributing
+Feel free to submit issues and pull requests to improve the application.
