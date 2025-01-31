@@ -1,16 +1,31 @@
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
+import { useEffect, useState } from "react";
 
-const data = [
-  { month: "Jan", amount: 1200 },
-  { month: "Feb", amount: 900 },
-  { month: "Mar", amount: 1600 },
-  { month: "Apr", amount: 1400 },
-  { month: "May", amount: 2000 },
-  { month: "Jun", amount: 1800 },
-];
+interface ExpenseChartProps {
+  expenses: number;
+  income: number;
+}
 
-export const ExpenseChart = () => {
+export const ExpenseChart = ({ expenses, income }: ExpenseChartProps) => {
+  const [data, setData] = useState([
+    { month: "Jan", amount: 0 },
+    { month: "Feb", amount: 0 },
+    { month: "Mar", amount: 0 },
+    { month: "Apr", amount: 0 },
+    { month: "May", amount: 0 },
+    { month: "Jun", amount: expenses },
+  ]);
+
+  useEffect(() => {
+    // Update the last month's data with current expenses
+    setData(prevData => {
+      const newData = [...prevData];
+      newData[newData.length - 1].amount = expenses;
+      return newData;
+    });
+  }, [expenses]);
+
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
