@@ -4,7 +4,7 @@ import { SummaryCard } from "@/components/SummaryCard";
 import { ExpenseChart } from "@/components/ExpenseChart";
 import { TransactionList } from "@/components/TransactionList";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -18,7 +18,7 @@ const Index = () => {
   const { toast } = useToast();
 
   const handleSave = () => {
-    if (tempValues.expenses > tempValues.income) {
+    if (Number(tempValues.expenses) > Number(tempValues.income)) {
       toast({
         title: "Warning",
         description: "Expenses cannot be greater than income.",
@@ -67,7 +67,7 @@ const Index = () => {
                   <Input
                     type="number"
                     value={tempValues.balance}
-                    onChange={(e) => setTempValues({ ...tempValues, balance: e.target.value })}
+                    onChange={(e) => setTempValues({ ...tempValues, balance: Number(e.target.value) })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -75,7 +75,7 @@ const Index = () => {
                   <Input
                     type="number"
                     value={tempValues.income}
-                    onChange={(e) => setTempValues({ ...tempValues, income: e.target.value })}
+                    onChange={(e) => setTempValues({ ...tempValues, income: Number(e.target.value) })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -83,7 +83,7 @@ const Index = () => {
                   <Input
                     type="number"
                     value={tempValues.expenses}
-                    onChange={(e) => setTempValues({ ...tempValues, expenses: e.target.value })}
+                    onChange={(e) => setTempValues({ ...tempValues, expenses: Number(e.target.value) })}
                   />
                 </div>
                 <Button className="w-full" onClick={handleSave}>
