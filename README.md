@@ -33,10 +33,10 @@ npm run dev
 - Visualize data: Use the charts to see spending patterns.
 
 ## Technologies Used
-- Frontend: React.js, TypeScript, Shadcn-ui, Tailwind CSS
-- Backend: Node.js, Express.js
-- Build Tool: Vite
-
+- React.js
+- TypeScript
+- Node.js
+- Express.js
 
 ## Contributing
 Feel free to submit issues and pull requests to improve the application.
