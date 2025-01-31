@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ShoppingBag, Coffee, Home, Car, Plus } from "lucide-react";
+import { ShoppingBag, Coffee, Home, Car, Plus, Pencil, Check, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,7 @@ const initialTransactions = [
     id: 1,
     title: "Groceries",
     amount: -120.50,
-    date: "Today",
+    date: "Jan 31",
     category: "Shopping",
     icon: ShoppingBag,
   },
@@ -35,7 +35,7 @@ const initialTransactions = [
     id: 2,
     title: "Coffee Shop",
     amount: -4.99,
-    date: "Yesterday",
+    date: "Jan 30",
     category: "Food",
     icon: Coffee,
   },
@@ -43,7 +43,7 @@ const initialTransactions = [
     id: 3,
     title: "Rent",
     amount: -1200,
-    date: "Mar 1",
+    date: "Jan 29",
     category: "Housing",
     icon: Home,
   },
@@ -51,7 +51,7 @@ const initialTransactions = [
     id: 4,
     title: "Gas",
     amount: -45.00,
-    date: "Feb 28",
+    date: "Jan 28",
     category: "Transport",
     icon: Car,
   },
@@ -60,7 +60,13 @@ const initialTransactions = [
 export const TransactionList = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [newTransaction, setNewTransaction] = useState({
+    title: "",
+    amount: "",
+    category: "",
+  });
+  const [editingTransaction, setEditingTransaction] = useState({
     title: "",
     amount: "",
     category: "",
@@ -75,7 +81,7 @@ export const TransactionList = () => {
       id: transactions.length + 1,
       title: newTransaction.title,
       amount: -Math.abs(parseFloat(newTransaction.amount)),
-      date: "Today",
+      date: "Jan 31",
       category: newTransaction.category,
       icon: categoryIcons[newTransaction.category as keyof typeof categoryIcons],
     };
@@ -83,6 +89,31 @@ export const TransactionList = () => {
     setTransactions([transaction, ...transactions]);
     setNewTransaction({ title: "", amount: "", category: "" });
     setShowForm(false);
+  };
+
+  const startEditing = (transaction: Transaction) => {
+    setEditingId(transaction.id);
+    setEditingTransaction({
+      title: transaction.title,
+      amount: Math.abs(transaction.amount).toString(),
+      category: transaction.category,
+    });
+  };
+
+  const saveEdit = (id: number) => {
+    setTransactions(transactions.map(t => {
+      if (t.id === id) {
+        return {
+          ...t,
+          title: editingTransaction.title,
+          amount: -Math.abs(parseFloat(editingTransaction.amount)),
+          category: editingTransaction.category,
+          icon: categoryIcons[editingTransaction.category as keyof typeof categoryIcons],
+        };
+      }
+      return t;
+    }));
+    setEditingId(null);
   };
 
   return (
@@ -148,21 +179,69 @@ export const TransactionList = () => {
             transition={{ delay: index * 0.1 }}
             className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            <div className="flex items-center space-x-4">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <transaction.icon className="w-5 h-5 text-primary" />
+            {editingId === transaction.id ? (
+              <div className="flex-1 space-y-2">
+                <Input
+                  value={editingTransaction.title}
+                  onChange={(e) => setEditingTransaction({ ...editingTransaction, title: e.target.value })}
+                />
+                <Input
+                  type="number"
+                  value={editingTransaction.amount}
+                  onChange={(e) => setEditingTransaction({ ...editingTransaction, amount: e.target.value })}
+                />
+                <Select
+                  value={editingTransaction.category}
+                  onValueChange={(value) => setEditingTransaction({ ...editingTransaction, category: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(categoryIcons).map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div className="flex space-x-2">
+                  <Button size="sm" onClick={() => saveEdit(transaction.id)}>
+                    <Check className="w-4 h-4" />
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => setEditingId(null)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-              <div>
-                <p className="font-medium text-gray-900">{transaction.title}</p>
-                <p className="text-sm text-gray-500">{transaction.category}</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="font-medium text-gray-900">
-                ${Math.abs(transaction.amount).toFixed(2)}
-              </p>
-              <p className="text-sm text-gray-500">{transaction.date}</p>
-            </div>
+            ) : (
+              <>
+                <div className="flex items-center space-x-4">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <transaction.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{transaction.title}</p>
+                    <p className="text-sm text-gray-500">{transaction.category}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="text-right">
+                    <p className="font-medium text-gray-900">
+                      ${Math.abs(transaction.amount).toFixed(2)}
+                    </p>
+                    <p className="text-sm text-gray-500">{transaction.date}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => startEditing(transaction)}
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                </div>
+              </>
+            )}
           </motion.div>
         ))}
       </div>
