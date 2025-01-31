@@ -29,9 +29,8 @@ npm run dev
 
 
 ## Usage
-- Navigate between months: Use the arrow buttons.
-- Add events: Click on a date to add events.
-- Manage events: Edit and delete events as needed.
+- Add transactions: Click on add new to add transactions.
+- Update summary: Edit the amounts as needed.
 - Visualize data: Use the charts to see spending patterns.
 
 ## Technologies Used
