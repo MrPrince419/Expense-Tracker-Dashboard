@@ -3,6 +3,8 @@
 ## 🌐 Live Demo
 **[Try the app here!](https://mrprince419-expense-tracker.netlify.app/)**
 
+A web-based application that allows users to track their income and expenses, categorize transactions, and visualize spending patterns through interactive charts.
+
 ## Features
 
 - Income and Expense Tracking: Log income and expenses with ease.
