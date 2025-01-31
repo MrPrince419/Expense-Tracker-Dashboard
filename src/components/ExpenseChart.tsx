@@ -9,24 +9,48 @@ interface ExpenseChartProps {
 
 export const ExpenseChart = ({ expenses, income }: ExpenseChartProps) => {
   const [data, setData] = useState(() => {
-    // Generate data for January 1-31
-    const januaryData = [];
-    for (let i = 1; i <= 31; i++) {
-      januaryData.push({
-        day: i,
+    // Generate sample data for January to May
+    const historicalData = [
+      {
+        month: "Jan",
+        expenses: 980,
+        income: 2100
+      },
+      {
+        month: "Feb",
+        expenses: 1200,
+        income: 2300
+      },
+      {
+        month: "Mar",
+        expenses: 850,
+        income: 1900
+      },
+      {
+        month: "Apr",
+        expenses: 1100,
+        income: 2400
+      },
+      {
+        month: "May",
+        expenses: 1300,
+        income: 2600
+      },
+      {
+        month: "Jun",
         expenses: 0,
         income: 0
-      });
-    }
-    return januaryData;
+      }
+    ];
+    return historicalData;
   });
 
   useEffect(() => {
-    // Update the last day's data with current expenses and income
+    // Update only June's data with current expenses and income
     setData(prevData => {
       const newData = [...prevData];
-      newData[newData.length - 1] = {
-        ...newData[newData.length - 1],
+      newData[5] = {
+        ...newData[5],
         expenses,
         income
       };
@@ -37,18 +61,17 @@ export const ExpenseChart = ({ expenses, income }: ExpenseChartProps) => {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">January 2024 Expense Trend</h3>
+        <h3 className="text-lg font-semibold text-gray-900">2024 Expense Trend</h3>
       </div>
       <div className="h-[300px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <XAxis
-              dataKey="day"
+              dataKey="month"
               stroke="#94a3b8"
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `Jan ${value}`}
             />
             <YAxis
               stroke="#94a3b8"
