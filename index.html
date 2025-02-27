@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Expense Tracker Dashboard</h1>
+            <p>Manage your finances with ease</p>
+            <div class="button-group">
+                <button id="updateSummaryBtn" title="Update financial summary">Update Summary</button>
+                <button id="exportDataBtn" title="Export data as JSON file">Export Data</button>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <section class="summary-grid">
+                <div class="card">
+                    <h3>Total Balance</h3>
+                    <p id="totalBalance">$929.51</p>
+                </div>
+                <div class="card">
+                    <h3>Total Income</h3>
+                    <p id="income">$2550.00</p>
+                </div>
+                <div class="card">
+                    <h3>Total Expenses</h3>
+                    <p id="expenses">$1620.49</p>
+                </div>
+                <div class="card">
+                    <h3>Savings Goal</h3>
+                    <p id="savingsGoal">$1000.00</p>
+                    <input type="number" id="setSavingsGoal" placeholder="Set Goal" step="0.01" title="Set your savings target">
+                </div>
+            </section>
+
+            <section class="content-grid">
+                <div class="chart-section">
+                    <div class="chart-controls">
+                        <h3>2024 Expense Overview</h3>
+                        <button id="toggleViewBtn" title="Switch between chart views">Switch View (Bar)</button>
+                    </div>
+                    <canvas id="expenseChart"></canvas>
+                </div>
+                <div class="transactions-section">
+                    <div class="transaction-header">
+                        <h3>Transaction History</h3>
+                        <input type="date" id="transactionDate" title="Select transaction date">
+                        <button id="addTransactionBtn" title="Add a new transaction">+ Add</button>
+                    </div>
+                    <ul id="transactionList">
+                        <li>
+                            <span contenteditable="true" class="transaction-item" data-category="groceries">Groceries</span>
+                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="groceries">130.50</span></span>
+                            <span class="transaction-date">(Jan 31)</span>
+                        </li>
+                        <li>
+                            <span contenteditable="true" class="transaction-item" data-category="coffee">Coffee Shop</span>
+                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="coffee">94.99</span></span>
+                            <span class="transaction-date">(Jan 30)</span>
+                        </li>
+                        <li>
+                            <span contenteditable="true" class="transaction-item" data-category="rent">Rent</span>
+                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="rent">250.00</span></span>
+                            <span class="transaction-date">(Jan 29)</span>
+                        </li>
+                        <li>
+                            <span contenteditable="true" class="transaction-item" data-category="gas">Gas</span>
+                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="gas">145.00</span></span>
+                            <span class="transaction-date">(Jan 28)</span>
+                        </li>
+                        <li>
+                            <span contenteditable="true" class="transaction-item" data-category="new">New Item</span>
+                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="new">1000.00</span></span>
+                            <span class="transaction-date">(Feb 26)</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>© 2025 Expense Tracker. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Support</a></p>
+        </footer>
+    </div>
+
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Update Summary</h2>
+            <div class="modal-form">
+                <label>Total Balance: $<input type="number" id="modalBalance" value="929.51" step="0.01"></label>
+                <label>Total Income: $<input type="number" id="modalIncome" value="2550.00" step="0.01"></label>
+                <label>Total Expenses: $<input type="number" id="modalExpenses" value="1620.49" step="0.01"></label>
+                <button id="saveChangesBtn">Save Changes</button>
+            </div>
+            <div id="loading" class="loading">Saving...</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
