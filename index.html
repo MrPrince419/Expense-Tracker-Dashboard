@@ -3,106 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker Dashboard</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap">
+    <title>Modern Expense Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="dashboard">
-        <header>
-            <h1>Expense Tracker Dashboard</h1>
-            <p>Manage your finances with ease</p>
-            <div class="button-group">
-                <button id="updateSummaryBtn" title="Update financial summary">Update Summary</button>
-                <button id="exportDataBtn" title="Export data as JSON file">Export Data</button>
+    <header>
+        <div class="container">
+            <div class="logo">Expense Tracker</div>
+            <div class="currency-selector">
+                <select id="currency-select">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                </select>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <main class="dashboard-content">
-            <section class="summary-grid">
-                <div class="card">
-                    <h3>Total Balance</h3>
-                    <p id="totalBalance">$929.51</p>
+    <main class="container dashboard">
+        <div class="grid">
+            <!-- Balance Summary -->
+            <div class="card balance-summary">
+                <div class="card-header">
+                    <h2 class="card-title">Balance Summary</h2>
                 </div>
-                <div class="card">
-                    <h3>Total Income</h3>
-                    <p id="income">$2550.00</p>
-                </div>
-                <div class="card">
-                    <h3>Total Expenses</h3>
-                    <p id="expenses">$1620.49</p>
-                </div>
-                <div class="card">
-                    <h3>Savings Goal</h3>
-                    <p id="savingsGoal">$1000.00</p>
-                    <input type="number" id="setSavingsGoal" placeholder="Set Goal" step="0.01" title="Set your savings target">
-                </div>
-            </section>
-
-            <section class="content-grid">
-                <div class="chart-section">
-                    <div class="chart-controls">
-                        <h3>2024 Expense Overview</h3>
-                        <button id="toggleViewBtn" title="Switch between chart views">Switch View (Bar)</button>
+                <div class="balance-amount" id="total-balance">$0.00</div>
+                <div class="balance-info">
+                    <div class="balance-item">
+                        <div class="balance-item-amount income" id="total-income">$0.00</div>
+                        <div class="balance-item-label">Income</div>
                     </div>
-                    <canvas id="expenseChart"></canvas>
-                </div>
-                <div class="transactions-section">
-                    <div class="transaction-header">
-                        <h3>Transaction History</h3>
-                        <input type="date" id="transactionDate" title="Select transaction date">
-                        <button id="addTransactionBtn" title="Add a new transaction">+ Add</button>
+                    <div class="balance-item">
+                        <div class="balance-item-amount expense" id="total-expense">$0.00</div>
+                        <div class="balance-item-label">Expenses</div>
                     </div>
-                    <ul id="transactionList">
-                        <li>
-                            <span contenteditable="true" class="transaction-item" data-category="groceries">Groceries</span>
-                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="groceries">130.50</span></span>
-                            <span class="transaction-date">(Jan 31)</span>
-                        </li>
-                        <li>
-                            <span contenteditable="true" class="transaction-item" data-category="coffee">Coffee Shop</span>
-                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="coffee">94.99</span></span>
-                            <span class="transaction-date">(Jan 30)</span>
-                        </li>
-                        <li>
-                            <span contenteditable="true" class="transaction-item" data-category="rent">Rent</span>
-                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="rent">250.00</span></span>
-                            <span class="transaction-date">(Jan 29)</span>
-                        </li>
-                        <li>
-                            <span contenteditable="true" class="transaction-item" data-category="gas">Gas</span>
-                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="gas">145.00</span></span>
-                            <span class="transaction-date">(Jan 28)</span>
-                        </li>
-                        <li>
-                            <span contenteditable="true" class="transaction-item" data-category="new">New Item</span>
-                            <span class="transaction-amount">$<span contenteditable="true" class="editable" data-category="new">1000.00</span></span>
-                            <span class="transaction-date">(Feb 26)</span>
-                        </li>
-                    </ul>
                 </div>
-            </section>
-        </main>
-        <footer>
-            <p>© 2025 Expense Tracker. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Support</a></p>
-        </footer>
-    </div>
+                <button id="add-transaction-btn" class="btn mt-20">Add Transaction</button>
+            </div>
 
-    <div id="updateModal" class="modal">
+            <!-- Expense Graph -->
+            <div class="card expense-graph">
+                <div class="card-header">
+                    <h2 class="card-title">2025 Expense Overview (Jan-May)</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="expense-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Budget Tracker -->
+            <div class="card budget-tracker">
+                <div class="card-header">
+                    <h2 class="card-title">Budget Goals</h2>
+                    <button id="add-budget-btn" class="btn">Set Budget</button>
+                </div>
+                <div id="budget-items">
+                    <!-- Budget items will be generated here -->
+                </div>
+            </div>
+
+            <!-- Transaction Filters -->
+            <div class="card transaction-filters">
+                <div class="card-header">
+                    <h2 class="card-title">Filters</h2>
+                </div>
+                <div class="form-group">
+                    <label for="category-filter">Category</label>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" id="date-from" style="width: 50%;">
+                        <input type="date" id="date-to" style="width: 50%;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Amount Range</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="number" id="amount-min" placeholder="Min" style="width: 50%;">
+                        <span>-</span>
+                        <input type="number" id="amount-max" placeholder="Max" style="width: 50%;">
+                    </div>
+                </div>
+                <button id="apply-filters" class="btn">Apply Filters</button>
+                <button id="reset-filters" class="btn" style="background: var(--gray); margin-top: 10px;">Reset</button>
+            </div>
+
+            <!-- Transactions List -->
+            <div class="card transactions-list">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Transactions</h2>
+                    <div class="search-bar">
+                        <input type="text" id="search-transaction" placeholder="Search transactions..." class="search-input">
+                        <button id="search-btn" class="btn">Search</button>
+                    </div>
+                </div>
+                <!-- Desktop Bulk Actions -->
+                <div class="bulk-actions" style="margin-bottom: 20px;">
+                    <button id="bulk-edit-btn" class="btn" disabled>Edit Selected</button>
+                    <button id="bulk-delete-btn" class="btn btn-danger" disabled>Delete Selected</button>
+                </div>
+                <!-- Desktop Transaction Table -->
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-list">
+                        <!-- Transactions will be generated here -->
+                    </tbody>
+                </table>
+                
+                <!-- Mobile Transaction Cards -->
+                <div id="mobile-transactions">
+                    <!-- Mobile transactions will be generated here -->
+                </div>
+                
+                <!-- Mobile Bulk Actions -->
+                <div class="bulk-actions" style="margin-top: 20px; display: none;" id="mobile-bulk-actions">
+                    <button id="mobile-bulk-edit-btn" class="btn" disabled>Edit Selected</button>
+                    <button id="mobile-bulk-delete-btn" class="btn btn-danger" disabled>Delete Selected</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Transaction Modal -->
+    <div id="transaction-modal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
-            <h2>Update Summary</h2>
-            <div class="modal-form">
-                <label>Total Balance: $<input type="number" id="modalBalance" value="929.51" step="0.01"></label>
-                <label>Total Income: $<input type="number" id="modalIncome" value="2550.00" step="0.01"></label>
-                <label>Total Expenses: $<input type="number" id="modalExpenses" value="1620.49" step="0.01"></label>
-                <button id="saveChangesBtn">Save Changes</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Add Transaction</h2>
+                <span class="close-modal">&times;</span>
             </div>
-            <div id="loading" class="loading">Saving...</div>
+            <form id="transaction-form">
+                <input type="hidden" id="transaction-id">
+                <div class="form-group">
+                    <label for="transaction-type">Type</label>
+                    <select id="transaction-type" required>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-description">Description</label>
+                    <input type="text" id="transaction-description" placeholder="E.g., Grocery Shopping" required>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-amount">Amount</label>
+                    <input type="number" id="transaction-amount" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-category">Category</label>
+                    <select id="transaction-category" required>
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-date">Date</label>
+                    <input type="date" id="transaction-date" required>
+                </div>
+                <button type="submit" class="btn">Save Transaction</button>
+            </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Budget Modal -->
+    <div id="budget-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Set Budget Goal</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="budget-form">
+                <input type="hidden" id="budget-id">
+                <div class="form-group">
+                    <label for="budget-category">Category</label>
+                    <select id="budget-category" required>
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget-amount">Budget Amount</label>
+                    <input type="number" id="budget-amount" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                <button type="submit" class="btn">Save Budget</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bulk Edit Modal -->
+    <div id="bulk-edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Multiple Transactions</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="bulk-edit-form">
+                <div class="form-group">
+                    <label for="bulk-category">Change Category To:</label>
+                    <select id="bulk-category" required>
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Update Transactions</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Currency Converter Modal -->
+    <div id="converter-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Currency Converter</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="from-currency">From Currency</label>
+                <select id="from-currency">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="CAD">CAD</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="to-currency">To Currency</label>
+                <select id="to-currency">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="CAD">CAD</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="convert-amount">Amount</label>
+                <input type="number" id="convert-amount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>Result</label>
+                <div id="conversion-result" style="font-size: 24px; font-weight: bold; margin-top: 10px;">-</div>
+                <div id="conversion-rate" style="color: var(--gray); font-size: 14px;"></div>
+            </div>
+            <button id="convert-btn" class="btn">Convert</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Expense Tracker Dashboard. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
+    
+    <script>
+        // Display mobile bulk actions on small screens
+        document.addEventListener('DOMContentLoaded', function() {
+            const mediaQuery = window.matchMedia('(max-width: 768px)');
+            const mobileBulkActions = document.getElementById('mobile-bulk-actions');
+            
+            function handleScreenChange(e) {
+                if (e.matches && mobileBulkActions) {
+                    mobileBulkActions.style.display = 'flex';
+                } else if (mobileBulkActions) {
+                    mobileBulkActions.style.display = 'none';
+                }
+            }
+            
+            mediaQuery.addListener(handleScreenChange);
+            handleScreenChange(mediaQuery);
+            
+            // Add click handlers for mobile bulk buttons
+            document.getElementById('mobile-bulk-edit-btn').addEventListener('click', function() {
+                document.getElementById('bulk-edit-modal').style.display = 'block';
+            });
+            
+            document.getElementById('mobile-bulk-delete-btn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete all selected transactions?')) {
+                    expenseTracker.bulkDeleteTransactions();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
