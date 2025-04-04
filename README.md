@@ -2,6 +2,10 @@
 
 A sleek, professional expense tracking application with advanced functionality and a responsive design.
 
+## Live Demo
+
+Check out the live demo: [Expense Tracker Dashboard](https://mrprince419.github.io/Expense-Tracker-Dashboard/)
+
 ## Features
 
 - **Transaction Management**: Add, edit, and delete income and expense transactions with detailed information
